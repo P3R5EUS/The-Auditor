@@ -2,8 +2,8 @@
 loader.py — Load 10-K filings from .txt or .pdf files.
 Supports both plain text and PDF (via pdfminer).
 """
-
 from pathlib import Path
+from langchain_community.document_loaders import PyPDFLoader
 
 
 def load_filing(filepath: Path) -> str:
@@ -32,12 +32,9 @@ def _load_txt(filepath: Path) -> str:
 
 
 def _load_pdf(filepath: Path) -> str:
-    import pdfplumber
-    text = ""
-    with pdfplumber.open(str(filepath)) as pdf:
-        for page in pdf.pages:
-            page_text = page.extract_text()
-            if page_text:
-                text += page_text + "\n"
-    print(f"[loader] Loaded PDF: {filepath.name} ({len(text):,} chars)")
+    print(f"[loader] Initializing PyPDFLoader for {filepath.name}...")
+    loader = PyPDFLoader(str(filepath))
+    pages = loader.load()
+    text = "\n".join([page.page_content for page in pages])
+    print(f"[loader] Successfully loaded {len(pages)} pages.")
     return text
