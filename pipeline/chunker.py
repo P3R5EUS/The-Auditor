@@ -9,7 +9,7 @@ are semantically coherent.
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
-CHUNK_SIZE = 1500       # ~375 tokens — fits well in embedding models
+CHUNK_SIZE = 2500
 CHUNK_OVERLAP = 200     # Overlap so context isn't lost at boundaries
 
 
